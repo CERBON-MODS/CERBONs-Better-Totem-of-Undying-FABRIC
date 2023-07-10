@@ -1,7 +1,6 @@
 package com.cerbon.better_totem_of_undying.client;
 
 import com.cerbon.better_totem_of_undying.BetterTotemOfUndying;
-import com.cerbon.better_totem_of_undying.config.BTUConfigs;
 import com.cerbon.better_totem_of_undying.util.BTUConstants;
 import com.cerbon.better_totem_of_undying.util.BTUUtils;
 import dev.emi.trinkets.api.client.TrinketRenderer;
@@ -19,7 +18,7 @@ public class BTUClient implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
-        if (BTUUtils.isModLoaded(BTUConstants.TRINKETS_MOD_ID)){
+        if (BTUUtils.isModLoaded(BTUConstants.TRINKETS_MOD_ID) && BetterTotemOfUndying.CONFIG.DISPLAY_TOTEM_ON_CHEST){
             renderVoidTotemTrinket();
         }
     }
