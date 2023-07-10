@@ -3,16 +3,16 @@
 	"id": "better_totem_of_undying",
 	"version": "${version}",
 	"name": "Better Totem Of Undying [FABRIC]",
-	"description": "This is an example description! Tell everyone what your mod is about!",
+	"description": "Improves Minecraft Totem of Undying by adding new features to it. Compatible with Trinkets.",
 	"authors": [
 		"CerbonXD!"
 	],
 	"contact": {
 		"homepage": "https://fabricmc.net/",
-		"sources": "https://github.com/FabricMC/fabric-example-mod"
+		"sources": "https://github.com/CerbonXD/BetterTotemOfUndying-FABRIC"
 	},
 	"license": "GNU General Public License v3.0",
-	"icon": "assets/better_totem_of_undying/icon.png",
+	"icon": "assets/better_totem_of_undying/logo.png",
 	"environment": "*",
 	"entrypoints": {
 		"main": [
