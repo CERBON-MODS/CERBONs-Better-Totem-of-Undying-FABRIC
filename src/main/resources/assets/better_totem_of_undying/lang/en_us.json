@@ -1,4 +1,6 @@
 {
+  "text.autoconfig.better_totem_of_undying.title": "Better Totem of Undying Config",
+
   "text.autoconfig.better_totem_of_undying.category.minecraft_default_totem_features": "Minecraft Default Totem Features",
   "text.autoconfig.better_totem_of_undying.option.SET_HEALTH": "Set Health",
   "text.autoconfig.better_totem_of_undying.option.REMOVE_ALL_EFFECTS": "Remove All Effects",
