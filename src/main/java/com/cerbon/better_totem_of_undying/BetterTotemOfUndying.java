@@ -1,16 +1,16 @@
 package com.cerbon.better_totem_of_undying;
 
-import com.cerbon.better_totem_of_undying.util.BTUConstants;
+import com.cerbon.better_totem_of_undying.config.BTUConfigs;
+import me.shedaniel.autoconfig.AutoConfig;
+import me.shedaniel.autoconfig.serializer.Toml4jConfigSerializer;
 import net.fabricmc.api.ModInitializer;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 public class BetterTotemOfUndying implements ModInitializer {
-    public static final Logger LOGGER = LoggerFactory.getLogger(BTUConstants.MOD_ID);
+	public static BTUConfigs CONFIG;
 
 	@Override
 	public void onInitialize() {
-		LOGGER.info("Hello Fabric world!");
+		AutoConfig.register(BTUConfigs.class, Toml4jConfigSerializer::new).getConfig();
+		CONFIG = AutoConfig.getConfigHolder(BTUConfigs.class).getConfig();
 	}
 }
