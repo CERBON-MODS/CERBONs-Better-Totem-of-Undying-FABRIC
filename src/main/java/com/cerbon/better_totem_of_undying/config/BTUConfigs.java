@@ -123,7 +123,7 @@ public class BTUConfigs implements ConfigData {
 
     @ConfigEntry.Category("new_totem_features")
     @Comment("If true Totem of Undying will receive a cooldown after being used and you will not be able to use it again during this period. DEFAULT: FALSE")
-    public boolean ADD_COOLDOWN = true;
+    public boolean ADD_COOLDOWN = false;
 
     @ConfigEntry.Category("new_totem_features")
     @Comment("Sets the cooldown duration in ticks. DEFAULT: 200")
