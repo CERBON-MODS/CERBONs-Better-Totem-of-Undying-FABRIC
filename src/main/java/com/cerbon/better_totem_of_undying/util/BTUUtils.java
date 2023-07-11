@@ -173,7 +173,7 @@ public class BTUUtils {
             BlockState blockAboveEntityPos = world.getBlockState(blockPos.up());
 
             if (canDestroy(blockAtEntityPos)) world.breakBlock(blockPos, true);
-            if (canDestroy(blockAboveEntityPos)) world.breakBlock(blockPos, true);
+            if (canDestroy(blockAboveEntityPos)) world.breakBlock(blockPos.up(), true);
 
             int distance = 2;
             while(true){
