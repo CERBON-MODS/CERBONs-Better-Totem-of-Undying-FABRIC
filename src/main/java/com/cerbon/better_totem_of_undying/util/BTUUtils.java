@@ -76,7 +76,7 @@ public class BTUUtils {
     }
 
     public static boolean isDimensionBlacklisted(@NotNull World world){
-        return BetterTotemOfUndying.CONFIG.BLACKLISTED_DIMENSIONS.contains(world.getDimension().toString());
+        return BetterTotemOfUndying.CONFIG.BLACKLISTED_DIMENSIONS.contains(world.getRegistryKey().getValue().toString());
     }
 
     public static boolean damageBypassInvulnerability(@NotNull DamageSource damageSource, LivingEntity livingEntity){
