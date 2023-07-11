@@ -16,15 +16,19 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.registry.Registry;
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.tag.DamageTypeTags;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.stat.Stats;
 import net.minecraft.util.Hand;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.Pair;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import net.minecraft.world.gen.structure.Structure;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -45,7 +49,7 @@ public class BTUUtils {
         BlockPos entityPos = livingEntity.getBlockPos();
         World world = livingEntity.getWorld();
 
-        if (isDimensionBlacklisted(world) || damageBypassInvulnerability(damageSource, livingEntity) || (!isTeleportOutOfVoidEnabled && isInVoid(livingEntity, damageSource)) || isTotemOnCooldown){
+        if (isDimensionBlacklisted(world) || isStructureBlacklisted(entityPos, (ServerWorld) world)  || damageBypassInvulnerability(damageSource, livingEntity) || (!isTeleportOutOfVoidEnabled && isInVoid(livingEntity, damageSource)) || isTotemOnCooldown){
             return false;
         }else {
             ItemStack itemStack = getTotemItemStack(livingEntity);
@@ -77,6 +81,23 @@ public class BTUUtils {
 
     public static boolean isDimensionBlacklisted(@NotNull World world){
         return BetterTotemOfUndying.CONFIG.BLACKLISTED_DIMENSIONS.contains(world.getRegistryKey().getValue().toString());
+    }
+
+    public static boolean isStructureBlacklisted(BlockPos pos, @NotNull ServerWorld world){
+        List<String> blacklistedStructures = BetterTotemOfUndying.CONFIG.BLACKLISTED_STRUCTURES;
+        Registry<Structure> structureRegistry = world.getStructureAccessor().getRegistryManager().get(RegistryKeys.STRUCTURE);
+
+        boolean flag = false;
+        for (String structureName : blacklistedStructures){
+            Structure structure = structureRegistry.get(new Identifier(structureName));
+
+            if (structure != null){
+                if (world.getStructureAccessor().getStructureAt(pos, structure).hasChildren()){
+                    flag = true;
+                }
+            }
+        }
+        return flag;
     }
 
     public static boolean damageBypassInvulnerability(@NotNull DamageSource damageSource, LivingEntity livingEntity){
