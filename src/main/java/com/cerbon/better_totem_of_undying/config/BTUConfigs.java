@@ -14,7 +14,7 @@ public class BTUConfigs implements ConfigData {
 
     @ConfigEntry.Category("minecraft_default_totem_features")
     @Comment("This value sets the health Totem of Undying will give to the entity upon use. DEFAULT: 1")
-    @ConfigEntry.BoundedDiscrete(min = 0, max = 20)
+    @ConfigEntry.BoundedDiscrete(min = 1, max = 20)
     public int SET_HEALTH = 1;
 
     @ConfigEntry.Category("minecraft_default_totem_features")
