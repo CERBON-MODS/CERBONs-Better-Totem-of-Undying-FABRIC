@@ -10,9 +10,9 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.entity.model.PlayerEntityModel;
-import net.minecraft.client.render.model.json.ModelTransformationMode;
+import net.minecraft.client.render.model.json.ModelTransformation;
 import net.minecraft.item.Items;
-import net.minecraft.util.math.RotationAxis;
+import net.minecraft.util.math.Vec3f;
 
 public class BTUClient implements ClientModInitializer {
 
@@ -30,9 +30,9 @@ public class BTUClient implements ClientModInitializer {
                 TrinketRenderer.translateToChest(matrices, (PlayerEntityModel<AbstractClientPlayerEntity>) contextModel, player);
 
                 matrices.scale(0.35F, 0.35F, 0.35F);
-                matrices.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(180));
+                matrices.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(180));
 
-                MinecraftClient.getInstance().getItemRenderer().renderItem(stack, ModelTransformationMode.FIXED, 15728880, OverlayTexture.DEFAULT_UV, matrices, vertexConsumers, MinecraftClient.getInstance().world, 0);
+                MinecraftClient.getInstance().getItemRenderer().renderItem(stack, ModelTransformation.Mode.FIXED, light, OverlayTexture.DEFAULT_UV, matrices, vertexConsumers, 0);
             }
         });
     }

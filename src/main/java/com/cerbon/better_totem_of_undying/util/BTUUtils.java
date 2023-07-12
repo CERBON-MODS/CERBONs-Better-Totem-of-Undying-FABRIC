@@ -11,14 +11,10 @@ import net.minecraft.block.FallingBlock;
 import net.minecraft.entity.EntityStatuses;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.damage.DamageTypes;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.registry.Registry;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.registry.tag.DamageTypeTags;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.stat.Stats;
@@ -27,6 +23,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.Pair;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.Structure;
 import org.jetbrains.annotations.NotNull;
@@ -85,7 +82,7 @@ public class BTUUtils {
 
     public static boolean isStructureBlacklisted(BlockPos pos, @NotNull ServerWorld world){
         List<String> blacklistedStructures = BetterTotemOfUndying.CONFIG.BLACKLISTED_STRUCTURES;
-        Registry<Structure> structureRegistry = world.getStructureAccessor().getRegistryManager().get(RegistryKeys.STRUCTURE);
+        Registry<Structure> structureRegistry = world.getStructureAccessor().getRegistryManager().get(Registry.STRUCTURE_KEY);
 
         boolean flag = false;
         for (String structureName : blacklistedStructures){
@@ -101,11 +98,11 @@ public class BTUUtils {
     }
 
     public static boolean damageBypassInvulnerability(@NotNull DamageSource damageSource, LivingEntity livingEntity){
-        return damageSource.isIn(DamageTypeTags.BYPASSES_INVULNERABILITY) && !(livingEntity.getY() < livingEntity.getWorld().getBottomY());
+        return damageSource.bypassesProtection() && !(livingEntity.getY() < livingEntity.getWorld().getBottomY());
     }
 
     public static boolean isInVoid(LivingEntity livingEntity, @NotNull DamageSource damageSource){
-        return damageSource.isOf(DamageTypes.OUT_OF_WORLD) && livingEntity.getY() < livingEntity.getWorld().getBottomY();
+        return damageSource.isOutOfWorld() && livingEntity.getY() < livingEntity.getWorld().getBottomY();
     }
 
     public static ItemStack getTotemItemStack(LivingEntity livingEntity){
