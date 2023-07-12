@@ -84,7 +84,7 @@ tasks.register('publishCurseForge', TaskPublishCurseForge) {
 
 modrinth {
 	token = System.getenv("MODRINTH_TOKEN")
-	versionName = "Better Totem of Undying ${project.version}"
+	versionName = "Better Totem of Undying ${project.minecraft_version}-${project.version}"
 	versionNumber = "${project.version}"
 	projectId = "V6iYTRJN"
 	changelog = rootProject.file("CHANGELOG.md").getText('UTF-8')
