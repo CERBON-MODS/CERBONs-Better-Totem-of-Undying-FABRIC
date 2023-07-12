@@ -71,7 +71,7 @@ dependencies {
 tasks.register('publishCurseForge', TaskPublishCurseForge) {
 	apiToken = System.getenv('CURSEFORGE_TOKEN')
 
-	def mainFile = upload(887366, jar)
+	def mainFile = upload(887366, remapJar)
 	mainFile.changelog = rootProject.file("CHANGELOG.md").getText('UTF-8')
 	mainFile.changelogType = 'markdown'
 	mainFile.releaseType = 'release'
