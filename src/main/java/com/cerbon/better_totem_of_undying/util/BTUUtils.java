@@ -25,7 +25,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.Structure;
+import net.minecraft.world.gen.feature.ConfiguredStructureFeature;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -82,11 +82,11 @@ public class BTUUtils {
 
     public static boolean isStructureBlacklisted(BlockPos pos, @NotNull ServerWorld world){
         List<String> blacklistedStructures = BetterTotemOfUndying.CONFIG.BLACKLISTED_STRUCTURES;
-        Registry<Structure> structureRegistry = world.getStructureAccessor().getRegistryManager().get(Registry.STRUCTURE_KEY);
+        Registry<ConfiguredStructureFeature<?, ?>> structureRegistry = world.getStructureAccessor().method_41036().get(Registry.CONFIGURED_STRUCTURE_FEATURE_KEY);
 
         boolean flag = false;
         for (String structureName : blacklistedStructures){
-            Structure structure = structureRegistry.get(new Identifier(structureName));
+            ConfiguredStructureFeature<?, ?> structure = structureRegistry.get(new Identifier(structureName));
 
             if (structure != null){
                 if (world.getStructureAccessor().getStructureAt(pos, structure).hasChildren()){
@@ -98,7 +98,7 @@ public class BTUUtils {
     }
 
     public static boolean damageBypassInvulnerability(@NotNull DamageSource damageSource, LivingEntity livingEntity){
-        return damageSource.bypassesProtection() && !(livingEntity.getY() < livingEntity.getWorld().getBottomY());
+        return damageSource.bypassesArmor() && !(livingEntity.getY() < livingEntity.getWorld().getBottomY());
     }
 
     public static boolean isInVoid(LivingEntity livingEntity, @NotNull DamageSource damageSource){
