@@ -85,12 +85,11 @@ tasks.register('publishCurseForge', TaskPublishCurseForge) {
 modrinth {
 	token = System.getenv("MODRINTH_TOKEN")
 	versionName = "Better Totem of Undying ${project.minecraft_version}-${project.version}"
-	versionNumber = "${project.version}"
-	projectId = "V6iYTRJN"
+	versionNumber = "${project.version}-Fabric"
+	projectId = "qRwFcI3W"
 	changelog = rootProject.file("CHANGELOG.md").getText('UTF-8')
 	versionType = "release"
 	uploadFile = remapJar
-	syncBodyFrom = rootProject.file("README.md").getText('UTF-8')
 	dependencies {
 		required.project("fabric-api")
 		required.project("cloth-config")
