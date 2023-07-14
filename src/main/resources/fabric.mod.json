@@ -2,7 +2,7 @@
 	"schemaVersion": 1,
 	"id": "better_totem_of_undying",
 	"version": "${version}",
-	"name": "Better Totem Of Undying [FABRIC]",
+	"name": "Better Totem of Undying [FABRIC]",
 	"description": "Improves Minecraft Totem of Undying by adding new features to it. Compatible with Trinkets.",
 	"authors": [
 		"CerbonXD!"

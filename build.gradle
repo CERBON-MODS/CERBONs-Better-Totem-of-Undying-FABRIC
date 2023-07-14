@@ -7,7 +7,7 @@ plugins {
 	id 'net.darkhax.curseforgegradle' version '1.1.15'
 }
 
-version = project.mod_version
+version = "${project.minecraft_version}-${project.mod_version}"
 group = project.maven_group
 
 base {
@@ -84,13 +84,12 @@ tasks.register('publishCurseForge', TaskPublishCurseForge) {
 
 modrinth {
 	token = System.getenv("MODRINTH_TOKEN")
-	versionName = "Better Totem of Undying ${project.minecraft_version}-${project.version}"
-	versionNumber = "${project.version}"
-	projectId = "V6iYTRJN"
+	versionName = "Better Totem of Undying ${project.version}"
+	versionNumber = "${project.version}-Fabric"
+	projectId = "qRwFcI3W"
 	changelog = rootProject.file("CHANGELOG.md").getText('UTF-8')
 	versionType = "release"
 	uploadFile = remapJar
-	syncBodyFrom = rootProject.file("README.md").getText('UTF-8')
 	dependencies {
 		required.project("fabric-api")
 		required.project("cloth-config")
