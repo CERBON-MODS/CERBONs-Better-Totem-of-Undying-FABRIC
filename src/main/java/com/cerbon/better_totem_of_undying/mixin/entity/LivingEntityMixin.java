@@ -1,4 +1,4 @@
-package com.cerbon.better_totem_of_undying.mixin;
+package com.cerbon.better_totem_of_undying.mixin.entity;
 
 import com.cerbon.better_totem_of_undying.util.BTUUtils;
 import com.cerbon.better_totem_of_undying.util.ILivingEntityMixin;
