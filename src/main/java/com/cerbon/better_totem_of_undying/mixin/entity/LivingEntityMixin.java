@@ -23,45 +23,45 @@ import java.util.Objects;
 @Mixin(value = LivingEntity.class, priority = 1100)
 public abstract class LivingEntityMixin extends Entity implements ILivingEntityMixin {
 
-    @Unique public long lastBlockPos;
+    @Unique private long better_totem_of_undying_lastBlockPos;
 
-    public LivingEntityMixin(EntityType<?> pEntityType, World world) {
+    private LivingEntityMixin(EntityType<?> pEntityType, World world) {
         super(pEntityType, world);
     }
 
     @Inject(method = "tryUseTotem", at = @At("HEAD"), cancellable = true)
-    private void checkTotemDeathProtection(DamageSource pDamageSource, @NotNull CallbackInfoReturnable<Boolean> cir) {
+    private void better_totem_of_undying_checkTotemDeathProtection(DamageSource pDamageSource, @NotNull CallbackInfoReturnable<Boolean> cir) {
         LivingEntity livingEntity = (LivingEntity) (Object) this;
         cir.setReturnValue(BTUUtils.canSaveFromDeath(livingEntity, pDamageSource));
     }
 
     @Inject(method = "writeCustomDataToNbt", at = @At("TAIL"))
-    public void addCustomData(@NotNull NbtCompound pCompound, CallbackInfo ci){
-        pCompound.putLong("LastBlockPos", this.lastBlockPos);
+    private void better_totem_of_undying_addCustomData(@NotNull NbtCompound pCompound, CallbackInfo ci){
+        pCompound.putLong("BTULastBlockPos", this.better_totem_of_undying_getLastBlockPos());
     }
 
     @Inject(method = "readCustomDataFromNbt", at = @At("TAIL"))
-    public void readCustomData(@NotNull NbtCompound pCompound, CallbackInfo ci){
-        this.lastBlockPos = pCompound.getLong("LastBlockPos");
+    private void better_totem_of_undying_readCustomData(@NotNull NbtCompound pCompound, CallbackInfo ci){
+        this.better_totem_of_undying_lastBlockPos = pCompound.getLong("BTULastBlockPos");
     }
 
     @Inject(method = "baseTick", at = @At("TAIL"))
-    public void saveEntityLastBlockPos(CallbackInfo ci) {
+    private void better_totem_of_undying_saveEntityLastBlockPos(CallbackInfo ci) {
         if (!this.getWorld().isClient()) {
             World world = this.getWorld();
             BlockPos currentPos = this.getBlockPos();
             BlockState blockBelowEntityPos = world.getBlockState(currentPos.down());
             boolean isValidBlock = blockBelowEntityPos.isSolidBlock(world, currentPos.down());
 
-            if (!Objects.equals(this.lastBlockPos, currentPos.asLong()) && isValidBlock) {
-                this.lastBlockPos = currentPos.asLong();
+            if (!Objects.equals(this.better_totem_of_undying_lastBlockPos, currentPos.asLong()) && isValidBlock) {
+                this.better_totem_of_undying_lastBlockPos = currentPos.asLong();
             }
         }
     }
 
     @Unique
     @Override
-    public long getLastBlockPos() {
-        return lastBlockPos;
+    public long better_totem_of_undying_getLastBlockPos() {
+        return better_totem_of_undying_lastBlockPos;
     }
 }
