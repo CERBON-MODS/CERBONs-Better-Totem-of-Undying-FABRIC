@@ -11,13 +11,14 @@ import net.minecraft.block.FallingBlock;
 import net.minecraft.entity.EntityStatuses;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.damage.DamageType;
 import net.minecraft.entity.damage.DamageTypes;
+import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.registry.Registry;
-import net.minecraft.registry.RegistryKeys;
+import net.minecraft.registry.*;
 import net.minecraft.registry.tag.DamageTypeTags;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
@@ -36,6 +37,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Predicate;
+import java.util.logging.Level;
 
 public class BTUUtils {
 
@@ -67,7 +69,7 @@ public class BTUUtils {
 
                 livingEntity.setHealth(BetterTotemOfUndying.CONFIG.SET_HEALTH);
 
-                applyTotemEffects(livingEntity);
+                applyTotemEffects(livingEntity, damageSource);
                 increaseFoodLevel(livingEntity, BetterTotemOfUndying.CONFIG.SET_FOOD_LEVEL);
                 destroyBlocksWhenSuffocatingOrFullyFrozen(livingEntity, world);
                 knockbackMobsAway(livingEntity, world);
@@ -157,7 +159,7 @@ public class BTUUtils {
         }
     }
 
-    public static void applyTotemEffects(LivingEntity livingEntity){
+    public static void applyTotemEffects(LivingEntity livingEntity, DamageSource damageSource){
         int fireResistanceEffectDuration = BetterTotemOfUndying.CONFIG.FIRE_RESISTANCE_DURATION;
         int regenerationEffectDuration = BetterTotemOfUndying.CONFIG.REGENERATION_DURATION;
         int regenerationEffectAmplifier = BetterTotemOfUndying.CONFIG.REGENERATION_AMPLIFIER;
@@ -174,6 +176,39 @@ public class BTUUtils {
         }
         if (BetterTotemOfUndying.CONFIG.ENABLE_REGENERATION) livingEntity.addStatusEffect(new StatusEffectInstance(StatusEffects.REGENERATION, regenerationEffectDuration, regenerationEffectAmplifier));
         if (BetterTotemOfUndying.CONFIG.ENABLE_ABSORPTION) livingEntity.addStatusEffect(new StatusEffectInstance(StatusEffects.ABSORPTION, absorptionEffectDuration, absorptionEffectAmplifier));
+
+        BetterTotemOfUndying.CONFIG.CUSTOM_EFFECTS.forEach(customEffectProperties -> {
+            if (!customEffectProperties.isEmpty()){
+                try {
+                    String damageTypeKey = customEffectProperties.get(0);
+                    String statusEffectKey = customEffectProperties.get(1);
+                    int effectDuration = Integer.parseInt(customEffectProperties.get(2));
+                    int effectAmplifier = Integer.parseInt(customEffectProperties.get(3));
+
+                    RegistryKey<DamageType> damageType = getDamageTypeByKey(damageTypeKey, (ServerWorld) livingEntity.getWorld());
+                    StatusEffect statusEffect = getStatusEffectByKey(statusEffectKey);
+
+                    if (damageType != null && damageSource.isOf(damageType) || damageTypeKey.equals("any")){
+                        livingEntity.addStatusEffect(new StatusEffectInstance(statusEffect, effectDuration, effectAmplifier));
+                    }
+
+                }catch (Exception e){
+                    BetterTotemOfUndying.LOGGER.log(Level.WARNING, "Better Totem of Undying error: Couldn't apply custom effect. Wrong/Missing parameter:" + customEffectProperties, e);
+                }
+            }
+        });
+    }
+
+    public static @Nullable RegistryKey<DamageType> getDamageTypeByKey(@NotNull String key, ServerWorld world){
+        if (!key.equals("any")){
+            Registry<DamageType> damageTypeRegistry = world.getRegistryManager().get(RegistryKeys.DAMAGE_TYPE);
+            return damageTypeRegistry.getKey(Objects.requireNonNull(damageTypeRegistry.get(new Identifier(key)))).orElse(null);
+        }
+        return null;
+    }
+
+    public static StatusEffect getStatusEffectByKey(String key){
+        return Objects.requireNonNull(Registries.STATUS_EFFECT.get(new Identifier(key)));
     }
 
     public static void increaseFoodLevel(LivingEntity livingEntity, int foodLevel){

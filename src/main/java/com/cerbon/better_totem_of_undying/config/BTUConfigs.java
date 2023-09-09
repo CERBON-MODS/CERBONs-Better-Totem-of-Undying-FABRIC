@@ -81,6 +81,11 @@ public class BTUConfigs implements ConfigData {
     public int SLOW_FALLING_DURATION = 600;
 
     @ConfigEntry.Category("new_totem_features")
+    @ConfigEntry.Gui.Excluded
+    @Comment("Use this list to add custom effects and specify when they should be triggered. Within this list, you should provide another list using curly braces, with the first parameter being the damage type, the second parameter being the effect that will be granted, the third parameter the duration of the effect in ticks, and the fourth parameter the effect amplifier. If you want the effect to always be granted, use the damage type as \"any\". Example: [[\"minecraft:out_of_world\", \"minecraft:blindness\", \"800\", \"0\"]]. In this example, if the player dies in the void, the totem will grant the level 1 blindness effect with a duration of 40 seconds. DEFAULT: Nothing")
+    public List<List<String>> CUSTOM_EFFECTS = List.of();
+
+    @ConfigEntry.Category("new_totem_features")
     @Comment("If false Totem of Undying will not increase your food level. DEFAULT: TRUE")
     public boolean ENABLE_INCREASE_FOOD_LEVEL = true;
 
